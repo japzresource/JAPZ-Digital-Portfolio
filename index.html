@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>JAPZ — Digital Portfolio</title>
+    <link rel="icon" type="image/png" href="images/japzlogo.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -25,6 +26,15 @@
             --line: rgba(244, 246, 250, 0.12);
             --line-strong: rgba(244, 246, 250, 0.24);
             --radius: 2px;
+        }
+
+        .nav-logo {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            height: 45px;
+            width: auto;
         }
 
         * {
@@ -91,11 +101,14 @@
         .enter-flash {
             position: fixed;
             inset: 0;
-            z-index: 100;
+            z-index: 150;
             background: var(--yellow);
-            opacity: 0.92;
+            opacity: 0;
             pointer-events: none;
-            animation: flashOut .55s ease-out forwards;
+        }
+
+        .enter-flash.play {
+            animation: flashOut .3s ease-out forwards;
         }
 
         @keyframes flashOut {
@@ -236,9 +249,11 @@
             position: absolute;
             inset: 0;
             z-index: 0;
-            transform: scale(1.18);
-            opacity: 0;
-            animation: heroZoomIn 1.8s .1s cubic-bezier(.16, .8, .24, 1) forwards;
+            background-color: var(--bg);
+            background-image: url('images/japz web.png');
+            background-size: cover;
+            background-position: right center;
+            background-repeat: no-repeat;
         }
 
         @keyframes heroZoomIn {
@@ -275,9 +290,19 @@
             inset: 0;
             z-index: 1;
             background:
-                linear-gradient(180deg, rgba(5, 7, 11, 0.5) 0%, rgba(5, 7, 11, 0.8) 55%, rgba(5, 7, 11, 0.96) 100%),
-                radial-gradient(ellipse 560px 900px at 0% 30%, rgba(63, 109, 255, 0.30), transparent 62%),
-                radial-gradient(ellipse 560px 900px at 100% 70%, rgba(63, 109, 255, 0.22), transparent 62%);
+                linear-gradient(180deg, rgba(5, 7, 11, 0.25) 0%, rgba(5, 7, 11, 0.5) 55%, rgba(5, 7, 11, 0.75) 100%),
+                radial-gradient(ellipse 560px 900px at 0% 30%, rgba(63, 109, 255, 0.20), transparent 62%),
+                radial-gradient(ellipse 560px 900px at 100% 70%, rgba(63, 109, 255, 0.15), transparent 62%);
+        }
+
+        .hero-logo {
+            position: absolute;
+            top: 28px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 3;
+            height: 48px;
+            width: auto;
         }
 
         .hero-copy {
@@ -663,6 +688,46 @@
             z-index: 2;
         }
 
+        .slide video,
+        .slide iframe {
+            max-width: 100%;
+            max-height: 100%;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        .yt-facade {
+            position: absolute;
+            inset: 0;
+            background-size: cover;
+            background-position: center;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .yt-play {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: rgba(5, 7, 11, 0.65);
+            border: 1px solid var(--line-strong);
+            color: var(--ink);
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background .2s ease, transform .2s ease;
+        }
+
+        .yt-facade:hover .yt-play {
+            background: var(--yellow);
+            color: var(--onyellow);
+            transform: scale(1.08);
+        }
+
         .slide .placeholder-txt {
             font-size: 10px;
             text-align: center;
@@ -672,6 +737,7 @@
             border: 1px dashed var(--line-strong);
             margin: 18px;
         }
+
 
         .slide-cap {
             position: absolute;
@@ -870,42 +936,46 @@
             padding-top: 12px;
         }
 
+        /* ---------- other projects: true-size masonry grid ---------- */
         .other-grid {
-            display: grid;
-            grid-template-columns: repeat(6, 1fr);
-            gap: 10px;
+            column-count: 3;
+            column-gap: 16px;
         }
 
         @media (max-width:900px) {
             .other-grid {
-                grid-template-columns: repeat(3, 1fr);
+                column-count: 2;
             }
         }
 
         @media (max-width:520px) {
             .other-grid {
-                grid-template-columns: repeat(2, 1fr);
+                column-count: 1;
             }
         }
 
         .other-slot {
-            aspect-ratio: 1/1;
+            display: block;
+            break-inside: avoid;
+            -webkit-column-break-inside: avoid;
+            margin-bottom: 14px;
             background: var(--bg-panel);
             border: 1px dashed var(--line-strong);
-            display: flex;
-            align-items: center;
-            justify-content: center;
             overflow: hidden;
-            background-size: cover;
-            background-position: center;
             position: relative;
+        }
+
+        .other-slot img {
+            display: block;
+            width: 100%;
+            height: auto;
         }
 
         .other-slot .placeholder-txt {
             font-size: 9px;
             text-align: center;
             color: var(--ink-faint);
-            padding: 6px;
+            padding: 24px 6px;
             line-height: 1.5;
         }
 
@@ -982,6 +1052,256 @@
             color: var(--ink-faint);
         }
 
+        .roll-head+.affil-grid {
+            margin-top: 0;
+        }
+
+        .affil-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 18px;
+        }
+
+        @media (max-width:900px) {
+            .affil-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width:560px) {
+            .affil-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .affil-card {
+            position: relative;
+            background: var(--bg-panel);
+            border: 1px solid var(--line);
+            padding: 14px;
+            overflow: hidden;
+            transition: border-color .3s ease, background .3s ease;
+        }
+
+        .affil-card:hover {
+            border-color: var(--line-strong);
+            background: var(--bg-panel-2);
+        }
+
+        .affil-logo {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            background: var(--bg-panel-2);
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 14px;
+            overflow: hidden;
+        }
+
+        .affil-logo[data-url] {
+            cursor: zoom-in;
+        }
+
+        .affil-name {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 14.5px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        .affil-desc {
+            font-size: 12.5px;
+            line-height: 1.6;
+            color: var(--ink-dim);
+        }
+
+        /* ---------- preloader ---------- */
+        body.is-loading {
+            overflow: hidden;
+        }
+
+        body.is-loading>*:not(#preloader):not(.enter-flash) {
+            opacity: 0;
+        }
+
+        body:not(.is-loading)>*:not(#preloader):not(.enter-flash) {
+            opacity: 1;
+            transition: opacity .6s ease;
+        }
+
+        #preloader {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            background: var(--bg);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: opacity .5s ease, visibility .5s ease;
+        }
+
+        #preloader.hide {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        #preloader .pre-mark {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            font-size: 13px;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--ink-dim);
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 9px;
+        }
+
+        #preloader .pre-mark .dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--yellow);
+            animation: blink 1.2s infinite;
+        }
+
+        #preloader .bar-track {
+            width: 220px;
+            height: 2px;
+            background: var(--line);
+            position: relative;
+            overflow: hidden;
+        }
+
+        #preloader .bar-fill {
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 0%;
+            background: var(--yellow);
+            transition: width .25s ease;
+        }
+
+        #preloader .pre-pct {
+            margin-top: 14px;
+            font-size: 12px;
+            color: var(--ink-faint);
+            letter-spacing: 0.05em;
+        }
+
+        /* ---------- lightbox ---------- */
+        #lightbox {
+            position: fixed;
+            inset: 0;
+            z-index: 300;
+            background: rgba(5, 7, 11, 0.92);
+            backdrop-filter: blur(4px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+        }
+
+        #lightbox.active {
+            display: flex;
+        }
+
+        #lightbox .lb-inner {
+            position: relative;
+            max-width: 92vw;
+            max-height: 88vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #lightbox img,
+        #lightbox video {
+            max-width: 92vw;
+            max-height: 80vh;
+            display: block;
+            border: 1px solid var(--line-strong);
+        }
+
+        #lightbox iframe {
+            width: min(92vw, 900px);
+            height: min(80vh, 506px);
+            border: 1px solid var(--line-strong);
+            display: block;
+        }
+
+        #lightbox .lb-cap {
+            margin-top: 14px;
+            font-size: 13px;
+            color: var(--ink-dim);
+            text-align: center;
+        }
+
+        #lightbox .lb-close {
+            position: absolute;
+            top: -44px;
+            right: 0;
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            border: 1px solid var(--line-strong);
+            background: rgba(5, 7, 11, 0.6);
+            color: var(--ink);
+            font-size: 16px;
+            line-height: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background .2s ease, color .2s ease;
+        }
+
+        #lightbox .lb-close:hover {
+            background: var(--yellow);
+            color: var(--onyellow);
+        }
+
+        .zoom-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background: rgba(5, 7, 11, 0.55);
+            color: var(--ink);
+            border: 1px solid var(--line-strong);
+            font-size: 13px;
+            line-height: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity .25s ease, background .2s ease, color .2s ease;
+            z-index: 6;
+        }
+
+        .gallery:hover .zoom-btn {
+            opacity: 1;
+        }
+
+        .zoom-btn:hover {
+            background: var(--yellow);
+            color: var(--onyellow);
+        }
+
+        .other-slot img {
+            cursor: zoom-in;
+        }
+
         @media (prefers-reduced-motion: reduce) {
             * {
                 animation: none !important;
@@ -1004,7 +1324,15 @@
     </style>
 </head>
 
-<body>
+<body class="is-loading">
+
+    <div id="preloader">
+        <div class="pre-mark"><span class="dot"></span> JAPZ</div>
+        <div class="bar-track">
+            <div class="bar-fill" id="pre-bar-fill"></div>
+        </div>
+        <div class="pre-pct mono" id="pre-pct">0%</div>
+    </div>
 
     <div class="enter-flash"></div>
     <div class="grain"></div>
@@ -1020,8 +1348,13 @@
         </svg>
     </div>
 
+    <div id="lightbox">
+        <div class="lb-inner" id="lb-inner"></div>
+    </div>
+
     <header class="nav">
         <div class="brand"><span class="dot"></span> JAPZ</div>
+        <img src="images/jpz logo.png" alt="Logo" class="nav-logo">
         <nav class="links">
             <a href="#about">About</a>
             <a href="#work">Work</a>
@@ -1032,7 +1365,7 @@
 
     <section class="hero">
         <div class="hero-bg">
-            <div class="gallery hero-gallery" id="hero-gallery"></div>
+            <div id="hero-gallery"></div>
             <div class="hero-overlay"></div>
         </div>
         <div class="wrap hero-copy">
@@ -1101,7 +1434,17 @@
         <div id="rolls"></div>
 
     </main>
-
+    <section id="affiliations">
+        <div class="wrap">
+            <div class="roll reveal">
+                <div class="roll-head">
+                    <h3>Brands &amp; Affiliations</h3>
+                    <span class="count mono">05 PARTNERS</span>
+                </div>
+                <div class="affil-grid" id="affil-grid"></div>
+            </div>
+        </div>
+    </section>
     <section id="other">
         <div class="wrap">
             <div class="section-head reveal" style="padding-bottom:36px;">
@@ -1124,8 +1467,7 @@
                 <a href="tel:0572850617">057 285 0617</a>
             </div>
             <div class="foot-links">
-                <a href="https://www.facebook.com/itzdaisukehere">Facebook</a>
-                <a href="https://www.instagram.com/crelinc.official/">Instagram</a>
+                <a href="https://linktr.ee/japzresource">Linktree</a>
                 <a href="mailto:contactjapzonbusiness@gmail.com">Email</a>
             </div>
             <div class="copy mono"> JAPZ JAMES | CRÉLINC PRODUCTIONS</div>
@@ -1135,8 +1477,8 @@
     <script>
         /* ============================================================
            EDIT ZONE — everything you need to change lives below.
-           Replace any "WAIT LNG GUYS IM STILL NOT FINISHED" with a real
-           image URL and it will appear automatically. Each project can
+           Replace any "images" placeholder url with a real image path
+           and it will appear automatically. Each project can
            have 1 or more images — 2+ images automatically becomes a
            slideshow with dots and arrows.
            ============================================================ */
@@ -1150,10 +1492,10 @@
                     event: "FUGEN Greek Dionysia — Live Play",
                     tag: "Poster Series",
                     images: [
-                        { url: "images", cap: "Behind the scenes" },
-                        { url: "images", cap: "Live performance" },
-                        { url: "images", cap: "Final poster" },
-                        { url: "ATLAS.png", cap: "Print detail" }
+                        { url: "images/fugen 1.png", cap: "Adonis" },
+                        { url: "images/fugen 2.png", cap: "Odysseus" },
+                        { url: "images/fugen 3.png", cap: "Zeus, God of the Sky and Thunder" },
+                        { url: "images/fugen 5.png", cap: "Atlas" }
                     ],
                     task: "Designed a 4-poster series for the high school's live theatrical performance.",
                     role: "Shot and edited raw production footage into imagery that captured the drama, tension, and spectacle of the Dionysia.",
@@ -1166,10 +1508,7 @@
                     event: "PCIS Work Immersion",
                     tag: "Highlight Film",
                     images: [
-                        { url: "images", cap: "On-site coverage" },
-                        { url: "images", cap: "Student at work" },
-                        { url: "images", cap: "Closing ceremony" },
-                        { url: "images", cap: "Video still" }
+                        { type: "youtube", url: "https://www.youtube.com/embed/5tRV3JgvSco", poster: "images/bhu.png", cap: "Highlight film" }
                     ],
                     task: "Produced the closing highlight video recapping Grade 12's Work Immersion Program.",
                     role: "Followed students on-site to capture unscripted, real moments — the nerves, the small wins, the genuine excitement of a first job.",
@@ -1182,7 +1521,9 @@
                     event: "Quinte Royale",
                     tag: "Merch Design",
                     images: [
-                        { url: "images/STAYC 1.png", cap: "Photocard set" },
+                        { url: "images/STAYC 1.png", cap: "Concept board & mood references" },
+                        { url: "images/STAYC 3.jpg", cap: "Concept board & mood references" },
+                        { url: "images/STAYC 2.png", cap: "Final cupsleeve set — photocards, circle cards & coaster" }
                     ],
                     task: "Designed a set of photocards and cup holders for the fan-meet-style event.",
                     role: "Built a dark purple-and-pink \"royalty\" aesthetic to match the event's regal concept, start to finish.",
@@ -1196,8 +1537,8 @@
                         event: "30th Anniversary — Called to Go, Chosen to Grow",
                         tag: "Shirt Design",
                         images: [
-                            { url: "images", cap: "Design concept" },
-                            { url: "images", cap: "Final concept" }
+                            { url: "images/CONCEPT.png", cap: "Concept guide" },
+                            { url: "images/SAMPLE 1.png", cap: "Final shirt design" }
                         ],
                         task: "Designed the anniversary t-shirt.",
                         role: "Anchored the design around the word \"Chosen,\" letting it carry the emotional weight of the theme.",
@@ -1207,10 +1548,8 @@
                         event: "31st Anniversary — Disciple-Maker, Be One – Make One",
                         tag: "Event Design",
                         images: [
-                            { url: "images", cap: "Stage backdrop" },
-                            { url: "images", cap: "Print materials" },
-                            { url: "images", cap: "Event day" },
-                            { url: "images", cap: "Detail shot" }
+                            { url: "images/disciple maker 1.jpg", cap: "Stage backdrop" },
+                            { type: "youtube", url: "https://www.youtube.com/embed/2Pje_Aa80Ck", poster: "images/di.png", cap: "Highlight film" }
                         ],
                         task: "Created the full visual design system for the anniversary.",
                         role: "Visualized the weight of discipleship — every disciple-maker carrying God's light through darkness.",
@@ -1225,10 +1564,10 @@
                         event: "20th Anniversary — Built With Patience",
                         tag: "Full Branding",
                         images: [
-                            { url: "images", cap: "Brand system" },
-                            { url: "images", cap: "Stage design" },
-                            { url: "images", cap: "Print collateral" },
-                            { url: "images", cap: "Event day" }
+                            { url: "images/PATIENCE SECTOR - LOGO (1).png", cap: "Brand system" },
+                            { url: "images/PATIENCE SECTOR - EVENT DESIGN (3).png", cap: "Stage design" },
+                            { url: "images/PATIENCE SECTOR - EVENT DESIGN (2).png", cap: "Print collateral" },
+                            { url: "images/PATIENCE SECTOR - FINAL EVENT DESIGN (4).png", cap: "Event day" }
                         ],
                         task: "Built the complete branding for the anniversary event.",
                         role: "Traced the sector's origin story into a visual legacy — a mark of unity for every sector gathering under Patience.",
@@ -1238,8 +1577,7 @@
                         event: "20th Anniversary — Built With Patience",
                         tag: "Shirt Design",
                         images: [
-                            { url: "images", cap: "Design concept" },
-                            { url: "images", cap: "Print mockup" }
+                            { url: "images/PATIENCE SECTOR - 20th Shirt Design.png", cap: "Design concept" },
                         ],
                         task: "Designed the anniversary t-shirt.",
                         role: "Chose a verse to match the event's theme, anchored on three words: Faithful, Focused, Forward.",
@@ -1249,8 +1587,9 @@
                         event: "The UPWRD'26 Vision",
                         tag: "Venue Revamp",
                         images: [
-                            { url: "images/cinema 1.jpg", cap: "Concept design" },
-                            { url: "images/u2.jpg", cap: "Wallpaper design" }
+                            { url: "images/u1.png", cap: "Concept design" },
+                            { url: "images/u2.png", cap: "Wallpaper design" },
+                            { url: "images/u3.png", cap: "Wallpaper design" },
                         ],
                         task: "Led the venue revamp from concept to completion.",
                         role: "Built a hall that is event-friendly and ready for use — a modern, trend-forward design with minimal decoration and an adjustable setup.",
@@ -1290,10 +1629,7 @@
                     event: "Aria's Beads — Brand Identity",
                     tag: "Logo Design",
                     images: [
-                        { url: "images/redsand 1.png", cap: "Concept sketch" },
-                        { url: "images/redsand 1.png", cap: "Color & font system" },
-                        { url: "images/redsand 1.png", cap: "Final logo mark" },
-                        { url: "images/redsand 1.png", cap: "Applied on Instagram profile" }
+                        { url: "images/drf.png", cap: "Concept sketch" }
                     ],
                     task: "Designed a cute, trendy, minimal cat logo for aria's beads, a handmade jewelry brand.",
                     role: "Drew and personally illustrated the cat mark by hand, then built out the color palette and typography to match the brand's soft, playful aesthetic.",
@@ -1304,13 +1640,53 @@
 
         // 👉 Add as many entries as you like — six show per row, extra ones wrap.
         const otherProjects = [
+            "images/others 5.png",
             "images/others 1.png",
-            "images/others 2.png",
+            "images/FRIENDLY.png",
             "images/others 3.png",
-            "images/others 1.jpg",
-            "images/others 1.jpg"
-        ];
+            "images/3x3.jpg",
+            "images/1A.png",
+            "images/1B.png",
+            "images/1C.png",
+            "images/march.png",
+            "images/others 4.png",
+            "images/FIREHOUSE.png",
+            "images/ar.png",
+            "images/21.png",
+            "images/sok.png",
+            "images/GN.png",
+            "images/jik1.png",
+            "images/pol.png"
 
+        ];
+        // 👉 Brands & affiliations — swap "images/..." for your real image paths.
+        const affiliations = [
+            {
+                logo: "images/2.png",
+                name: "CRÉLINC Productions",
+                desc: "Underground event production crew — Audio, Visual, Lights & Event Production."
+            },
+            {
+                logo: "images/1D.png",
+                name: "Wrapped.cc",
+                desc: "A online shop promoting high quality japanese and miniature toys, and products."
+            },
+            {
+                logo: "images/others 7.png",
+                name: "Black Paradise",
+                desc: "A well-known shop specializing in oreo milkshakes, and cheesy fries in Al Danah International School."
+            },
+            {
+                logo: "images/3.png",
+                name: "NXBAND",
+                desc: "A Gospel Youth Band that spreads the gospel through complex musical arrangements."
+            },
+            {
+                logo: "images/4.png",
+                name: "Second Choice",
+                desc: "Palm Crest International School's Secular Band that promotes social awareness and community engagement."
+            }
+        ];
         /* ============================================================
            RENDER LOGIC — no need to touch anything below this line.
            ============================================================ */
@@ -1329,12 +1705,30 @@
 
             const slides = images.map((img, i) => {
                 const ph = isPlaceholder(img.url);
+                const isVideo = img.type === "video";
+                const isYoutube = img.type === "youtube";
                 const safeUrl = img.url ? img.url.replace(/'/g, "%27") : img.url;
-                const bgAttr = ph ? '' : ` style="background-image:url('${safeUrl}')"`;
+                const bgAttr = (ph || isVideo || isYoutube) ? '' : ` style="background-image:url('${safeUrl}')"`;
                 const altText = (img.cap || 'Project image').replace(/"/g, '&quot;');
                 const a11yAttrs = ph ? ' role="presentation"' : ` role="img" aria-label="${altText}"`;
+                const videoTag = (!ph && isVideo)
+                    ? `<video src="${safeUrl}" controls preload="metadata"${img.poster ? ` poster="${img.poster.replace(/'/g, "%27")}"` : ''}></video>`
+                    : '';
+                const youtubeTag = (!ph && isYoutube)
+                    ? (img.poster
+                        ? `<div class="yt-facade" data-embed="${safeUrl}" style="background-image:url('${img.poster.replace(/'/g, "%27")}')"><span class="yt-play">▶</span></div>`
+                        : `<iframe src="${safeUrl}" title="${altText}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`)
+                    : '';
+                const capAttr = (img.cap || '').replace(/"/g, '&quot;');
+                const mediaType = isYoutube ? 'youtube' : (isVideo ? 'video' : 'image');
+                const zoomBtn = (!ph && showNav)
+                    ? `<button class="zoom-btn" type="button" aria-label="View larger" data-url="${safeUrl}" data-type="${mediaType}" data-cap="${capAttr}">⤢</button>`
+                    : '';
                 return `<div class="slide ${i === 0 ? 'active' : ''}"${bgAttr}${a11yAttrs}>
           ${ph ? `<div class="placeholder-txt">${PLACEHOLDER}</div>` : ''}
+          ${videoTag}
+          ${youtubeTag}
+          ${zoomBtn}
           ${img.cap ? `<div class="slide-cap">${img.cap}</div>` : ''}
         </div>`;
             }).join('');
@@ -1357,10 +1751,10 @@
         // from STAYC, Psalm 23, Patience Sector, and aria.beads. Replace the
         // urls the same way as everywhere else — just paste a real image link.
         const heroHighlights = [
-            { url: "images/cinema 1.jpg", cap: "" },
-            { url: "images/cinema 2.jpg", cap: "" },
-            { url: "images/cinema 3.jpg", cap: "" },
-            { url: "images/cinema 4.jpg", cap: "" }
+            { url: "images/fugen-zeus.jpg", cap: "" },
+            { url: "images/stayc-quinteroyale.jpg", cap: "" },
+            { url: "images/calledtogo-final.jpg", cap: "" },
+            { url: "images/fugen-atlas.jpg", cap: "" }
         ];
         document.getElementById('hero-gallery').innerHTML = galleryHTML(heroHighlights, false);
 
@@ -1425,13 +1819,31 @@
             start();
         });
 
+        // "Other Projects" grid: renders true <img> tags at natural
+        // aspect ratio inside a masonry-style column layout, so the
+        // grid adjusts itself to each image's real dimensions.
         const otherGridEl = document.getElementById('other-grid');
         otherGridEl.innerHTML = otherProjects.map(url => {
             const ph = isPlaceholder(url);
             const safeUrl = url ? url.replace(/'/g, "%27") : url;
-            return `<div class="other-slot ${ph ? 'placeholder' : ''}" ${!ph ? `style="background-image:url('${safeUrl}')"` : ''}>
-    ${ph ? `<div class="placeholder-txt">${PLACEHOLDER}</div>` : ''}
+            return `<div class="other-slot ${ph ? 'placeholder' : ''}">
+    ${ph
+                    ? `<div class="placeholder-txt">${PLACEHOLDER}</div>`
+                    : `<img src="${safeUrl}" alt="Project photo" loading="lazy">`}
     <div class="vf-corner vf-tl"></div><div class="vf-corner vf-br"></div>
+  </div>`;
+        }).join('');
+
+        const affilGridEl = document.getElementById('affil-grid');
+        affilGridEl.innerHTML = affiliations.map(a => {
+            const ph = isPlaceholder(a.logo);
+            const safeUrl = a.logo ? a.logo.replace(/'/g, "%27") : a.logo;
+            return `<div class="affil-card">
+    <div class="affil-logo" ${!ph ? `style="background-image:url('${safeUrl}')" data-url="${safeUrl}"` : ''}>
+      ${ph ? `<div class="placeholder-txt">${PLACEHOLDER}</div>` : ''}
+    </div>
+    <div class="affil-name">${a.name}</div>
+    <div class="affil-desc">${a.desc}</div>
   </div>`;
         }).join('');
 
@@ -1452,6 +1864,138 @@
                 crosshair.style.top = e.clientY + 'px';
             });
         }
+
+        // ---------- lightbox: big preview on click for gallery images/videos + other-projects grid ----------
+        const lightbox = document.getElementById('lightbox');
+        const lbInner = document.getElementById('lb-inner');
+
+        function openLightbox(url, type, cap) {
+            const mediaHTML = (type === 'video')
+                ? `<video src="${url}" controls autoplay></video>`
+                : (type === 'youtube')
+                    ? `<iframe src="${url}${url.includes('?') ? '&' : '?'}autoplay=1" title="${(cap || 'Preview').replace(/"/g, '&quot;')}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`
+                    : `<img src="${url}" alt="${(cap || 'Preview').replace(/"/g, '&quot;')}">`;
+            lbInner.innerHTML = `<button class="lb-close" type="button" aria-label="Close preview">✕</button>${mediaHTML}${cap ? `<div class="lb-cap">${cap}</div>` : ''}`;
+            lightbox.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox() {
+            lightbox.classList.remove('active');
+            lbInner.innerHTML = '';
+            document.body.style.overflow = '';
+        }
+
+        document.addEventListener('click', (e) => {
+            const facade = e.target.closest('.yt-facade');
+            if (facade) {
+                const embedUrl = facade.dataset.embed;
+                const iframe = document.createElement('iframe');
+                iframe.src = embedUrl + (embedUrl.includes('?') ? '&' : '?') + 'autoplay=1';
+                iframe.title = 'YouTube video';
+                iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture');
+                iframe.setAttribute('allowfullscreen', '');
+                facade.replaceWith(iframe);
+                return;
+            }
+            const zoomBtn = e.target.closest('.zoom-btn');
+            if (zoomBtn) {
+                e.stopPropagation();
+                openLightbox(zoomBtn.dataset.url, zoomBtn.dataset.type, zoomBtn.dataset.cap || '');
+                return;
+            }
+            const otherImg = e.target.closest('.other-slot img');
+            if (otherImg) {
+                openLightbox(otherImg.getAttribute('src'), 'image', '');
+                return;
+            }
+            const affilLogo = e.target.closest('.affil-logo[data-url]');
+            if (affilLogo) {
+                const name = affilLogo.parentElement.querySelector('.affil-name');
+                openLightbox(affilLogo.dataset.url, 'image', name ? name.textContent : '');
+                return;
+            }
+            if (e.target.closest('.lb-close') || e.target === lightbox) {
+                closeLightbox();
+            }
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeLightbox();
+        });
+
+        /* ---------- preloader: wait for every real image before showing the site ---------- */
+        function collectAllImageUrls() {
+            const urls = new Set();
+            heroHighlights.forEach(img => { if (!isPlaceholder(img.url)) urls.add(img.url); });
+            rolls.forEach(roll => roll.works.forEach(w => {
+                w.images.forEach(img => {
+                    if (img.type !== 'video' && !isPlaceholder(img.url)) urls.add(img.url);
+                });
+            }));
+            otherProjects.forEach(url => { if (!isPlaceholder(url)) urls.add(url); });
+            affiliations.forEach(a => { if (!isPlaceholder(a.logo)) urls.add(a.logo); });
+            return Array.from(urls);
+        }
+
+        (function preloadAndReveal() {
+            const urls = collectAllImageUrls();
+            const total = urls.length;
+            const barFill = document.getElementById('pre-bar-fill');
+            const pct = document.getElementById('pre-pct');
+            const preloader = document.getElementById('preloader');
+            const MIN_DISPLAY_MS = 2000;
+            const startTime = Date.now();
+
+            let revealed = false;
+            function reveal() {
+                if (revealed) return;
+                revealed = true;
+                document.body.classList.remove('is-loading');
+                const flash = document.querySelector('.enter-flash');
+                if (flash) flash.classList.add('play');
+                preloader.classList.add('hide');
+                setTimeout(() => preloader.remove(), 600);
+            }
+
+            let imagesReady = (total === 0);
+            let minTimeReached = false;
+
+            function tryReveal() {
+                if (imagesReady && minTimeReached) reveal();
+            }
+
+            setTimeout(() => { minTimeReached = true; tryReveal(); }, MIN_DISPLAY_MS);
+
+            if (total === 0) {
+                barFill.style.width = '100%';
+                pct.textContent = '100%';
+                tryReveal();
+                return;
+            }
+
+            let loaded = 0;
+            function tick() {
+                loaded++;
+                const p = Math.round((loaded / total) * 100);
+                barFill.style.width = p + '%';
+                pct.textContent = p + '%';
+                if (loaded >= total) {
+                    imagesReady = true;
+                    tryReveal();
+                }
+            }
+
+            urls.forEach(url => {
+                const img = new Image();
+                img.onload = tick;
+                img.onerror = tick; // don't let one broken/missing image hang the page
+                img.src = url;
+            });
+
+            // safety net in case a request stalls without ever firing load/error
+            setTimeout(reveal, 15000);
+        })();
     </script>
 
 </body>
